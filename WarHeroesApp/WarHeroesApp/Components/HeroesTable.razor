@@ -20,7 +20,8 @@
            TItem="Hero"
            DataSource="@FilteredHeroes"
            Bordered
-           HidePagination>
+           HidePagination
+           PageSize="1000">
         <Column Title="Герой" Field="@context.Name" Width="20%">
             <h2>@context.Name @context.Surname</h2>
             <Image Src=@context.ImageUrl Preview="@false"></Image>
