@@ -1,0 +1,93 @@
+﻿@using System.Text.RegularExpressions
+@using System.Web
+@using WarHeroesApp.Model
+@using WarHeroesApp.Helpers
+
+<div class="overflow-auto">
+    <input value="@heroesFilter" placeholder="Поиск" @oninput="@((ChangeEventArgs e) => FilterChanged(e))" />
+    <br /><br />
+    <div class="form-group">
+        <label for="pOrgId">Фильтр по званию</label>
+        <select id="pOrgId" class="form-control" @onchange="FilterByRank">
+            @foreach (var rank in Enum.GetValues(typeof(Rank)).Cast<Rank>())
+            {
+                <option value=@((int)rank)>@EnumUtility.GetEnumDescription(rank)</option>
+            }
+        </select>
+    </div>
+    <br /><br />
+    <Table @ref="@swoHeroes"
+           TItem="Hero"
+           DataSource="@FilteredHeroes"
+           Bordered
+           @bind-PageIndex="_pageIndex"
+           PageSize=10>
+        <Column Title="Герой" Field="@context.Name" Width="20%">
+            <h2>@context.Name @context.Surname</h2>
+            <Image Src=@context.ImageUrl Preview="@false"></Image>
+        </Column>
+        <Column Title="Звание" Field="@context.Rank" Width="10%">
+            @(EnumUtility.GetEnumDescription(@context.Rank))
+        </Column>
+        <Column Title="Подвиг" Field="@context.Description" Width="70%">
+            @((MarkupString)@context.Description)
+        </Column>
+    </Table>
+</div>
+
+
+
+
+@code {
+    private ITable swoHeroes;
+    private int _pageIndex = 1;
+    private Hero[]? FilteredHeroes;
+    private string? heroesFilter = string.Empty;
+    private Rank FilterRank { get; set; } = Rank.Любое;
+
+    [Parameter]
+    public Hero[] Heroes { get; set; }
+
+    protected override Task OnParametersSetAsync()
+    {
+        FilteredHeroes = Heroes;
+        return base.OnParametersSetAsync();
+    }
+
+    private void FilterChanged(ChangeEventArgs e)
+    {
+        heroesFilter = e?.Value?.ToString();
+        if (heroesFilter != null)
+        {
+            FilterHeroes();
+        }
+    }
+
+    private void FilterByRank(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            FilterRank = (Rank)int.Parse(e.Value.ToString());
+            FilterHeroes();
+        }
+    }
+
+    private void FilterHeroes()
+    {
+        if (FilterRank != Rank.Любое)
+        {
+            FilteredHeroes = Heroes?.Where(x => x.Rank == FilterRank).ToArray();
+        }
+        else
+        {
+            FilteredHeroes = Heroes;
+        }
+
+        if (!string.IsNullOrEmpty(heroesFilter))
+        {
+            FilteredHeroes = FilteredHeroes?.Where(x => $"{x.Name.Replace('ё','е').Replace('Ё','Е')} {x.Surname.Replace('ё','е').Replace('Ё','Е')}".Contains(heroesFilter.Replace('ё','е').Replace('Ё','Е'), StringComparison.CurrentCultureIgnoreCase)).ToArray();
+        }
+        _pageIndex = 1;
+        StateHasChanged();
+    }
+}

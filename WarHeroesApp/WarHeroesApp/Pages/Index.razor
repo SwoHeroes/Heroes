@@ -1,0 +1,32 @@
+﻿@page "/"
+
+<PageTitle>Герои СВО</PageTitle>
+
+@using System.Linq
+@using System.Text.RegularExpressions
+@using WarHeroesApp.Model
+@using WarHeroesApp.Components
+@using WarHeroesApp.Helpers
+
+@inject HttpClient Http
+
+<h3>Герои СВО на территории Украины</h3>
+
+@if (heroes == null)
+{
+    <Spin size="large" Tip="Загрузка" />
+}
+else
+{
+    <HeroesTable Heroes="heroes" />
+}
+
+@code {
+    private Hero[]? heroes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        heroes = await Http.GetFromJsonAsync<Hero[]>("data/heroes.json");
+        heroes = heroes?.OrderBy(x => x.Surname).ThenBy(x => x.Name).ToArray();
+    }
+}
