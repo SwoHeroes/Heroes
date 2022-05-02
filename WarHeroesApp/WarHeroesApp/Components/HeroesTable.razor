@@ -20,8 +20,7 @@
            TItem="Hero"
            DataSource="@FilteredHeroes"
            Bordered
-           @bind-PageIndex="_pageIndex"
-           PageSize=10>
+           HidePagination>
         <Column Title="Герой" Field="@context.Name" Width="20%">
             <h2>@context.Name @context.Surname</h2>
             <Image Src=@context.ImageUrl Preview="@false"></Image>
@@ -40,7 +39,6 @@
 
 @code {
     private ITable swoHeroes;
-    private int _pageIndex = 1;
     private Hero[]? FilteredHeroes;
     private string? heroesFilter = string.Empty;
     private Rank FilterRank { get; set; } = Rank.Любое;
@@ -87,7 +85,6 @@
         {
             FilteredHeroes = FilteredHeroes?.Where(x => $"{x.Name.Replace('ё','е').Replace('Ё','Е')} {x.Surname.Replace('ё','е').Replace('Ё','Е')}".Contains(heroesFilter.Replace('ё','е').Replace('Ё','Е'), StringComparison.CurrentCultureIgnoreCase)).ToArray();
         }
-        _pageIndex = 1;
         StateHasChanged();
     }
 }
