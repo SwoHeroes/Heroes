@@ -813,7 +813,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-7FmN2O7mFgAY\/Z2ZMsZdKuGvlOc8pOEwam5NyF6pyHg=",
+      "hash": "sha256-0MYLj2+t4cCvZRCOixB4mfG2v7mR5AbBbdd0k91emj8=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -1005,7 +1005,7 @@
       "url": "_framework\/System.Threading.dll"
     },
     {
-      "hash": "sha256-bvRW23NyF5f94czCt2sjvmh5dwp4VtOFB9Zo7v3Q71M=",
+      "hash": "sha256-H4AoemToVY3k98pH9Vu9S3Mr+K6xLnk7+vQie99EpvU=",
       "url": "_framework\/WarHeroesApp.dll"
     },
     {
@@ -2313,5 +2313,5 @@
       "url": "_content\/AntDesign\/less\/upload\/style\/rtl.less"
     }
   ],
-  "version": "g9ukRdRN"
+  "version": "xv\/r+ZJs"
 };
